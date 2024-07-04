@@ -7,9 +7,30 @@ import { Button } from '@/components/ui/button';
 import { ArrowUpDown } from 'lucide-react';
 import { DebouncedInput } from '@/components/ui/debounce-input';
 import { DateRange } from 'react-day-picker';
-
+import { Checkbox } from '@/components/ui/checkobox';
+import { EditButtonCell } from './modal/edit-cell.component';
 
 export const columns: ColumnDef<OcorrunciesDataGrid>[] = [
+  {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+  },
   {
     accessorKey: 'id',
     header: ({ column }) => (
@@ -82,7 +103,7 @@ export const columns: ColumnDef<OcorrunciesDataGrid>[] = [
         <DebouncedInput
           value={(column.getFilterValue() ?? '') as string}
           onChange={value => column.setFilterValue(value)}
-          placeholder="Filter Transportador..."
+          placeholder="Filtrar Transportador..."
         />
       </div>
     ),
@@ -101,5 +122,9 @@ export const columns: ColumnDef<OcorrunciesDataGrid>[] = [
       </div>
     ),
     filterFn: 'includesString',
-  }
+  },
+  {
+    id: 'edit',
+    cell: ({ row }) => <EditButtonCell occurenceId={row.original.id} />,
+  },
 ];
