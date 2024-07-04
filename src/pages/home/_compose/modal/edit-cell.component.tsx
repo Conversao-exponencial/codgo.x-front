@@ -1,11 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { EditOccurrenceModal } from '.';
 
 
 
 
 interface EditButtonCellProps {
-  occurenceId: string;
+  occurenceId: number;
 }
 
 export const EditButtonCell = React.memo(({ occurenceId }: EditButtonCellProps) => {
